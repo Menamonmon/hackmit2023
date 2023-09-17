@@ -3,12 +3,12 @@ import type { NextPage } from "next";
 const Profile: NextPage = () => {
   return (
     <img
-      className="absolute top-[2.56rem] left-[1.94rem] rounded-[50%] w-[9.5rem] h-[9.5rem] object-cover"
+      className="rounded-[50%] object-cover"
       alt="profile"
       loading="eager"
       id="profile-picture"
-      width={144}
-      height={144}
+      width={100}
+      height={100}
       src="/profile-picture-text-card@2x.png"
     />
   );

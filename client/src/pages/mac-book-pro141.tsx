@@ -55,12 +55,6 @@ const MacBookPro141: NextPage = () => {
       src="/542724-1@2x.png"
     />
   </button>
-  <Recorder
-        onRecorded={async (data: string) => {
-          console.log(data);
-          setAudioInput(data);
-        }}
-  />
   {/* <button
     className="cursor-pointer [border:none] p-0 bg-[transparent] absolute top-[2.56rem] left-[38.81rem] w-[9rem] h-[9rem] overflow-hidden"
     id="voice-button"

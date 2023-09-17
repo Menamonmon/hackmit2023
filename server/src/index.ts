@@ -22,7 +22,7 @@ import { attachSocketLogic } from "./sockets";
 
 const prisma = new PrismaClient();
 const app = express();
-const port = process.env.PORT;
+const port = 4000 || process.env.PORT;
 
 const server = http.createServer(app);
 const io = new Server(server);

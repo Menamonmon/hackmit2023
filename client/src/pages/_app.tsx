@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import type { AppProps } from "next/app";
 import "./global.css";
+import { IoProvider } from "socket.io-react-hook";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,7 +14,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <Component {...pageProps} />
+      <IoProvider>
+        <Component {...pageProps} />
+      </IoProvider>
     </React.Fragment>
   );
 }

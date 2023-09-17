@@ -13,7 +13,7 @@ interface ChatbotSocket extends Socket {
   chatbot: Chatbot | undefined;
 }
 
-interface HistoricMessage {
+export interface HistoricMessage {
   author: "user" | "chatbot";
   content: string;
   language: string;
@@ -25,9 +25,31 @@ export const attachSocketLogic = (io: Server) => {
     let socket = sock as ChatbotSocket;
 
     // Initialize the chatgpt client
-    socket.on("handshake", (params: InitiationParams) => {
+    socket.on("handshake", async (params: InitiationParams) => {
       const { language, person, topic } = params;
       socket.chatbot = new Chatbot(language, person, topic);
+      const messageContent =
+        socket.chatbot.messages[socket.chatbot.messages.length - 1].content;
+      if (!messageContent) {
+        throw Error("Init message is empty");
+      }
+      const responseAudio = await convertTextToSpeech(
+        messageContent,
+        socket.chatbot.language,
+        socket.chatbot.personProfile
+      );
+
+      if (!responseAudio) {
+        throw Error("Something wrong happened with response audio");
+      }
+
+      const returnHMessage: HistoricMessage = {
+        asAudio: responseAudio,
+        author: "chatbot",
+        content: messageContent,
+        language: socket.chatbot.language,
+      };
+      socket.emit("initial_bot_message", returnHMessage);
     });
 
     socket.on(
@@ -42,6 +64,7 @@ export const attachSocketLogic = (io: Server) => {
           fullLanguage.split("-")[0]
         );
         console.log(text);
+        socket.emit("transcribe_latest_message", { latestMessageAsText: text });
 
         const hMessage: HistoricMessage = {
           asAudio: "",
