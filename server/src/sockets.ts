@@ -28,8 +28,8 @@ export const attachSocketLogic = (io: Server) => {
     socket.on("handshake", async (params: InitiationParams) => {
       const { language, person, topic } = params;
       socket.chatbot = new Chatbot(language, person, topic);
-      const messageContent =
-        socket.chatbot.messages[socket.chatbot.messages.length - 1].content;
+      await socket.chatbot.setUserMessage(socket.chatbot.initMessage);
+      const messageContent = socket.chatbot.getChatbotResponse();
       if (!messageContent) {
         throw Error("Init message is empty");
       }

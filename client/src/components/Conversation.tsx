@@ -65,25 +65,26 @@ const Conversation = () => {
 
   const { lastMessage } = useSocketEvent(socket, "new_prompt_response", {
     onMessage: (message: { promptResponse: HistoricMessage }) => {
-      const hMsg = message.promptResponse;
-      setMessagesHistory((prev) => [...prev, hMsg]);
+      console.log(message);
+      //   const hMsg = message.promptResponse;
+      //   setMessagesHistory((prev) => [...prev, hMsg]);
     },
   });
 
-  const { lastMessage: latestUserTranscription } = useSocketEvent(
-    socket,
-    "transcribe_latest_message",
-    {
-      onMessage: (message: { latestMessageAsText: string }) => {
-        messagesHistory.push({
-          asAudio: latestVoiceRecording,
-          author: "user",
-          content: message.latestMessageAsText,
-          language: params?.language || "",
-        });
-      },
-    }
-  );
+//   const { lastMessage: latestUserTranscription } = useSocketEvent(
+//     socket,
+//     "transcribe_latest_message",
+//     {
+//       onMessage: (message: { latestMessageAsText: string }) => {
+//         messagesHistory.push({
+//           asAudio: latestVoiceRecording,
+//           author: "user",
+//           content: message.latestMessageAsText,
+//           language: params?.language || "",
+//         });
+//       },
+//     }
+//   );
 
   useEffect(() => {
     if (connected) {
@@ -95,7 +96,7 @@ const Conversation = () => {
     } else {
       if (socket?.connect) socket.connect();
     }
-  }, [socket]);
+  }, [socket, connected]);
 
   useEffect(() => {
     if (connected && inited && latestVoiceRecording !== "") {
@@ -126,7 +127,7 @@ const Conversation = () => {
         >
           {messagesHistory.length == 0
             ? "Talk with someone historical and their response will go here."
-            : messagesHistory.map((msg) => <Message />)}
+            : messagesHistory.map((msg) => <Message msg={msg} />)}
         </h3>
         <section
           className="flex items-center justify-center px-10 rounded-794xl bg-darkslategray shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] overflow-hidden text-left text-[2rem] text-white font-manrope"

@@ -1,7 +1,10 @@
 import React from "react";
+import { HistoricMessage } from "./Conversation";
 
-const Message = () => {
-  return <div>Message</div>;
+const Message: React.FC<{ msg: HistoricMessage }> = ({
+  msg: { asAudio, author, content, language },
+}) => {
+  return <div>{content}</div>;
 };
 
 export default Message;
